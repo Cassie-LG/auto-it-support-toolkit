@@ -6,6 +6,10 @@ from fixer import fix_issue
 from logger import log_event
 from ticket import create_ticket
 
+#Track number of fix attempts per issue type
+attempts = {}
+MAX_ATTEMPTS = 3
+
 #Load config
 with open("config.json") as f:
     config = json.load(f)
@@ -16,8 +20,21 @@ while True:
     issues = detect_issues(stats, config)
 
     for issue in issues:
+        issue_type = issue["type"]
+
+        #Initialize counter
+        if issue_type not in attempts:
+            attempts[issue_type] = 0
+
         log_event(issue["message"])
-        action = fix_issue(issue)
+
+        #Only attempt to fix up to MAX_ATTEMPTS
+        if attempts[issue_type] < MAX_ATTEMPTS:
+            action = fix_issue(issue)
+            attempts[issue_type] += 1
+        else:
+            action = "Max fix attempts reached"
+            
         create_ticket(issue, action)
         print(f"[ISSUE] {issue['message']} -> {action}")
     
