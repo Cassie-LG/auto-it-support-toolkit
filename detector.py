@@ -14,7 +14,7 @@ def detect_issues(stats, config):
         issues.append({"type": "DISK", "message": "Low disk space"})
 
     #Process issue (ex. check if critical process is missing)
-    running = [p[1] for p in stats["proesses"]]
+    running = [p[1] for p in stats["processes"]]
     if "ssh" not in running:
         issues.append({"type": "PROCESS", "message": "SSH service not running"})
 
