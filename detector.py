@@ -1,3 +1,9 @@
+import platform
+
+#Choose process based on OS
+SYSTEM = platform.system()
+DEFAULT_SERVICE = "explorer" if SYSTEM == "Windows" else "ssh"
+
 def detect_issues(stats, config):
     issues = []
 
@@ -15,7 +21,7 @@ def detect_issues(stats, config):
 
     #Process issue (ex. check if critical process is missing)
     running = [p[1] for p in stats["processes"]]
-    if "ssh" not in running:
-        issues.append({"type": "PROCESS", "message": "SSH service not running"})
+    if DEFAULT_SERVICE not in running:
+        issues.append({"type": "PROCESS", "message": f"{DEFAULT_SERVICE} service not running"})
 
     return issues
