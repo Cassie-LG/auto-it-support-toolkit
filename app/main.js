@@ -20,7 +20,9 @@ function createWindow() {
 
     // Wait for Flask to start
     setTimeout(() => {
-        mainWindow.loadURL('http://127.0.0.1:5000');
+        if (mainWindow) {
+            mainWindow.loadURL('http://127.0.0.1:5000');
+        }
     }, 3000);
 
     mainWindow.on('closed', function () {
@@ -34,6 +36,8 @@ function startFlask() {
     const basePath = isDev ? path.join(__dirname, '..') : path.join(process.resourcesPath, 'app');
     const python = 'python';
 
+    console.log("Base path:", basePath);
+
     //Start main monitoring
     flaskProcess = spawn(python, ['main.py'], {
         cwd: basePath
@@ -44,12 +48,20 @@ function startFlask() {
         cwd: basePath
     });
 
+    flaskProcess.on('error', (err) => {
+        console.error("Failed to start main.py:", err);
+    });
+
     flaskProcess.stdout.on('data', (data) => {
         console.log(`Main: ${data}`);
     });
 
     flaskProcess.stderr.on('data', (data) => {
         console.error(`Main error: ${data}`);
+    });
+
+    dashboardProcess.on('error', (err) => {
+        console.error("Failed to start dashboard.py:", err);
     });
 
     dashboardProcess.stdout.on('data', (data) => {
