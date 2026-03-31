@@ -18,7 +18,10 @@ function createWindow() {
         icon: path.join(__dirname, 'icon.png')
     });
 
-    mainWindow.loadURL('http://127.0.0.1:5000');
+    // Wait for Flask to start
+    setTimeout(() => {
+        mainWindow.loadURL('http://127.0.0.1:5000');
+    }, 3000);
 
     mainWindow.on('closed', function () {
         mainWindow = null;
@@ -28,15 +31,15 @@ function createWindow() {
 // Start Flask server
 function startFlask() {
     const isDev = !app.isPackaged;
-    const basePath = isDev ? path.join(__dirname, '..') : process.resourcesPath;
-    const python = 'python';     // Use system Python in dev and packaged builds
+    const basePath = isDev ? path.join(__dirname, '..') : path.join(process.resourcesPath, 'app');
+    const python = 'python';
 
-    // Main monitoring process
+    //Start main monitoring
     flaskProcess = spawn(python, ['main.py'], {
         cwd: basePath
     });
 
-    //Dashboard process
+    //Start dashboard
     const dashboardProcess = spawn(python, ['dashboard.py'], {
         cwd: basePath
     });
