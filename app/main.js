@@ -29,16 +29,22 @@ function createWindow() {
 function startFlask() {
     // Windows vs Unix commands
     const python = process.platform === 'win32' ? 'python' : 'python3';
-    flaskProcess = spawn(python, ['dashboard.py'], {
+    // Start continuous monitoring system
+    flaskProcess = spawn(python, ['main.py'], {
+        cwd: path.join(__dirname, '..')
+    });
+
+    // Start Flask dashboard separately
+    const flaskDashboard = spawn(python, ['dashboard.py'], {
         cwd: path.join(__dirname, '..')
     });
 
     flaskProcess.stdout.on('data', (data) => {
-        console.log(`Flask: ${data}`);
+        console.log(`Dashboard: ${data}`);
     });
 
     flaskProcess.stderr.on('data', (data) => {
-        console.error(`Flask error: ${data}`);
+        console.error(`Dashboard error: ${data}`);
     });
 }
 
