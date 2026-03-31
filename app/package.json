@@ -19,9 +19,10 @@
     },
     "files": [
       "**/*",
-      "../*.py",
-      "../config.json",
-      "../tickets.json"
+      {
+        "from": "..",
+        "filter": ["*.py", "config.json", "tickets.json"]
+      }
     ],
     "win": {
       "target": "nsis"
