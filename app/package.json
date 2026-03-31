@@ -4,7 +4,7 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "start": "concurrently \"python ../dashboard.py\" \"electron .\""
+    "start": "concurrently \"cd .. && python dashboard.py\" \"electron .\""
   },
   "keywords": [],
   "author": "",
