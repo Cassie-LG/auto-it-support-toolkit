@@ -1,23 +1,35 @@
 from flask import Flask, render_template, jsonify
 import json
-from monitor import get_system_stats
-from detector import detect_issues
+import os
 
-#Load config
-with open("config.json") as f:
-    CONFIG = json.load(f)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-    app = Flask(__name__, template_folder="app/templates", static_folder="app/static")
+app = Flask(__name__, template_folder="app/templates", static_folder="app/static")
 
-    @app.route("/")
-    def index():
-        return render_template("index.html")
+def load_tickets():
+    tickets_file = os.path.join(BASE_DIR, "tickets.json")
+
+    if not os.path.exists(tickets_file):
+        return []
     
-    @app.route("/status")
-    def status():
-        stats = get_system_stats()
-        issues = detect_issues(stats, CONFIG)
-        return jsonify({"stats": stats, "issues": issues})
+    with open(tickets_file) as f:
+        return [json.loads(line) for line in f]
     
-    if __name__ == "__main__":
-        app.run(debug=False)
+
+@app.route("/")
+
+def index():
+    return render_template("index.html")
+
+@app.route("/tickets")
+def tickets():
+    tickets = load_tickets()
+    return jsonify(tickets[::-1])     #Newest first
+
+@app.route("/latest")
+def latest():
+    tickets = load_tickets()
+    return jsonify(tickets[-5:] if len(tickets) >= 5 else tickets)
+
+if __name__ == "__main__":
+    app.run(debug=False)
