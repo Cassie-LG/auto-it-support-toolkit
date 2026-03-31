@@ -21,8 +21,13 @@
       "**/*",
       {
         "from": "..",
+        "to": "backend",
         "filter": ["*.py", "config.json", "tickets.json"]
       }
+    ],
+    "asarUnpack": [
+      "**/*.py",
+      "../*.py"
     ],
     "win": {
       "target": "nsis"
