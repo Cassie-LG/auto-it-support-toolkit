@@ -7,6 +7,7 @@ def create_ticket(issue, action):
         "timestamp": str(datetime.now()),
         "issue": issue["message"],
         "type": issue["type"],
+        "severity": issue["severity"],
         "action_taken": action,
         "status": "closed" if action else "open"
     }
