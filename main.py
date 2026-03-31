@@ -21,12 +21,13 @@ while True:
 
     for issue in issues:
         issue_type = issue["type"]
+        severity = issue["severity"]
 
         #Initialize counter
         if issue_type not in attempts:
             attempts[issue_type] = 0
 
-        log_event(issue["message"])
+        log_event(issue["message"], severity)
 
         #Only attempt to fix up to MAX_ATTEMPTS
         if attempts[issue_type] < MAX_ATTEMPTS:
@@ -36,6 +37,6 @@ while True:
             action = "Max fix attempts reached"
             
         create_ticket(issue, action)
-        print(f"[ISSUE] {issue['message']} -> {action}")
+        print(f"[{severity}] {issue['message']} -> {action}")
     
     time.sleep(config["check_interval"])
