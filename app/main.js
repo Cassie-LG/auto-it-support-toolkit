@@ -29,7 +29,9 @@ function createWindow() {
 function startFlask() {
     // Windows vs Unix commands
     const python = process.platform === 'win32' ? 'python' : 'python3';
-    flaskProcess = spawn(python, ['../main.py'], { cwd: path.join(__dirname, '..') });
+    flaskProcess = spawn(python, ['dashboard.py'], {
+        cwd: path.join(__dirname, '..')
+    });
 
     flaskProcess.stdout.on('data', (data) => {
         console.log(`Flask: ${data}`);
