@@ -4,7 +4,8 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "start": "concurrently \"cd .. && python main.py\" \"cd .. && pythong dashboard.py\" \"electron .\"",
+    "start": "concurrently \"cd .. && python main.py\" \"cd .. && python dashboard.py\" \"electron .\"",
+    "build": "electron-builder",
     "dist": "electron-builder",
     "dist:win": "electron-builder --win",
     "dist:mac": "electron-builder -mac",
