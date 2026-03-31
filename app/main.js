@@ -27,23 +27,33 @@ function createWindow() {
 
 // Start Flask server
 function startFlask() {
-    // Windows vs Unix commands
-    const python = process.platform === 'win32' ? 'python' : 'python3';
-    // Start continuous monitoring system
+    const isDev = !app.isPackaged;
+    const basePath = isDev ? path.join(__dirname, '..') : process.resourcesPath;
+    const python = 'python';     // Use system Python in dev and packaged builds
+
+    // Main monitoring process
     flaskProcess = spawn(python, ['main.py'], {
-        cwd: path.join(__dirname, '..')
+        cwd: basePath
     });
 
-    // Start Flask dashboard separately
-    const flaskDashboard = spawn(python, ['dashboard.py'], {
-        cwd: path.join(__dirname, '..')
+    //Dashboard process
+    const dashboardProcess = spawn(python, ['dashboard.py'], {
+        cwd: basePath
     });
 
     flaskProcess.stdout.on('data', (data) => {
-        console.log(`Dashboard: ${data}`);
+        console.log(`Main: ${data}`);
     });
 
     flaskProcess.stderr.on('data', (data) => {
+        console.error(`Main error: ${data}`);
+    });
+
+    dashboardProcess.stdout.on('data', (data) => {
+        console.log(`Dashboard: ${data}`);
+    });
+
+    dashboardProcess.stderr.on('data', (data) => {
         console.error(`Dashboard error: ${data}`);
     });
 }
