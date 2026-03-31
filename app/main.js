@@ -18,25 +18,35 @@ function createWindow() {
         icon: path.join(__dirname, 'icon.png')
     });
 
-    // Wait for Flask to start
-    setTimeout(() => {
-        if (mainWindow) {
-            mainWindow.loadURL('http://127.0.0.1:5000');
-        }
-    }, 3000);
+    loadApp();
 
     mainWindow.on('closed', function () {
         mainWindow = null;
     });
 }
 
+function loadApp() {
+    const url = 'http://127.0.0.1:5000';
+
+    const tryLoad = () => {
+        if (!mainWindow) return;
+
+        mainWindow.loadURL(url).catch(() => {
+            console.log("Waiting for Flask...");
+            setTimeout(tryLoad, 1000);
+        });
+    };
+
+    tryLoad();
+}
+
 // Start Flask server
 function startFlask() {
     const isDev = !app.isPackaged;
-    const basePath = isDev ? path.join(__dirname, '..') : path.join(process.resourcesPath, 'app');
+    const basePath = isDev
+        ? path.join(__dirname, '..')
+        : path.join(process.resourcesPath, 'backend');
     const python = 'python';
-
-    console.log("Base path:", basePath);
 
     //Start main monitoring
     flaskProcess = spawn(python, ['main.py'], {
@@ -47,6 +57,8 @@ function startFlask() {
     const dashboardProcess = spawn(python, ['dashboard.py'], {
         cwd: basePath
     });
+
+    console.log("Base path:", basePath);
 
     flaskProcess.on('error', (err) => {
         console.error("Failed to start main.py:", err);
