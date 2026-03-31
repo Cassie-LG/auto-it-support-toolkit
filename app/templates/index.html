@@ -36,7 +36,7 @@
                 latest.forEach(issue => {
                     const li = document.createElement('li');
                     li.className = issue.severity.toLowerCase();
-                    li.textContent = `[${issue.severity}] $}issue.issue} -> ${issue.action_taken}`;
+                    li.textContent = `[${issue.severity}] ${issue.issue} -> ${issue.action_taken}`;
                     latestList.appendChild(li);
                 });
 
