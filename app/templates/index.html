@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Auto IT Support Toolkit Dashboard</title>
+        <link rel="stylesheet" href="/static/style.css">
+    </head>
+
+    <body>
+        <h1>Auto IT Support Toolkit Dashboard</h1>
+        <div id="stats">
+            <h2>System Stats</h2>
+            <pre id="statsData">Loading...</pre>
+        </div>
+        <div id="issues">
+            <h2>Detected Issues</h2>
+            <ul id="issuesList"></ul>
+        </div>
+
+        <script>
+            async function fetchStatus() {
+                const res = await fetch('/status');
+                const data = await res.json();
+
+                document.getElementById('statsData').textContent =
+                    JSON.stringify(data.stats, null, 2);
+
+                const issuesList = document.getElementById('issuesList');
+                issuesList.innerHTML = '';
+                data.issues.forEach(issue => {
+                    const li = document.createElement('li');
+                    li.textContent = `[${issue['type']}] ${issue['message']}`;
+                    issueList.appendChild(li);
+                });
+            }
+
+            setInterval(fetchStatus, 5000);
+            fetchStatus();
+        </script>
+    </body>
+</html>
