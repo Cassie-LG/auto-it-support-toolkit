@@ -1,27 +1,37 @@
 body {
-    font-family: Arial, sans-serif;
-    background: #f4f4f9;
+    font-family: Arial;
+    background: #1e1e2f;
+    color: white;
     padding: 20px;
 }
 
 h1 {
-    color: #333;
+    text-align: center;
 }
 
-pre {
-    background: #fff;
-    padding: 10px;
-    border-radius: 5px;
-}
-
-ul {
-    list-style: none;
-    padding: 0;
+.panel {
+    background: #2b2b3d;
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 10px;
 }
 
 li {
-    background: #ffdddd;
+    padding: 8px;
     margin: 5px 0;
-    padding: 5px;
-    border-radius: 3px;
+    border-radius: 5px;
+}
+
+/* Severity colors */
+.low {
+    background: #4caf50;
+}
+.medium {
+    background: #ff9800;
+}
+.high {
+    background: #f44336;
+}
+.critical {
+    background: #b71c1c;
 }
