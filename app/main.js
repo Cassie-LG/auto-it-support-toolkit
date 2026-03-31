@@ -44,7 +44,7 @@ function loadApp() {
 function startFlask() {
     const isDev = !app.isPackaged;
     const basePath = isDev
-        ? path.join(__dirname, '..')
+        ? __dirname
         : path.join(process.resourcesPath, 'backend');
     const python = 'python';
 
