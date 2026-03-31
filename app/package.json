@@ -4,7 +4,27 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "start": "concurrently \"cd .. && python dashboard.py\" \"electron .\""
+    "start": "concurrently \"cd .. && python main.py\" \"cd .. && pythong dashboard.py\" \"electron .\"",
+    "dist": "electron-builder",
+    "dist:win": "electron-builder --win",
+    "dist:mac": "electron-builder -mac",
+    "dist:linux": "electron-builder --linux"
+  },
+  "build": {
+    "appId": "com.autoitsupport.toolkit",
+    "productName": "Auto IT Support Toolkie",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "**/*",
+      "../*.py",
+      "../config.json",
+      "../tickets.json"
+    ],
+    "win": {
+      "target": "nsis"
+    }
   },
   "keywords": [],
   "author": "",
