@@ -7,34 +7,49 @@
 
     <body>
         <h1>Auto IT Support Toolkit Dashboard</h1>
-        <div id="stats">
-            <h2>System Stats</h2>
-            <pre id="statsData">Loading...</pre>
+        <div class="panel">
+            <h2>System Overview</h2>
+            <p>Monitoring active...</p>
         </div>
-        <div id="issues">
-            <h2>Detected Issues</h2>
-            <ul id="issuesList"></ul>
+        <div class="panel">
+            <h2>Last Detected Issues</h2>
+            <ul id="latest"></ul>
         </div>
-
+        <div class="panel">
+            <h2>Issue History</h2>
+            <ul id="history"></ul>
+        </div>
         <script>
-            async function fetchStatus() {
-                const res = await fetch('/status');
-                const data = await res.json();
+            async function fetchData() {
+                const latestRes = await fetch('/latest');
+                const latest = await latestRes.json();
 
-                document.getElementById('statsData').textContent =
-                    JSON.stringify(data.stats, null, 2);
+                const historyRes = await fetch('/tickets');
+                const history = await historyRes.json();
 
-                const issuesList = document.getElementById('issuesList');
-                issuesList.innerHTML = '';
-                data.issues.forEach(issue => {
+                const latestList = document.getElementById('latest');
+                const historyList = document.getElementById('history');
+
+                latestList.innerHTML = '';
+                historyList.innerHTML = '';
+
+                latest.forEach(issue => {
                     const li = document.createElement('li');
-                    li.textContent = `[${issue['type']}] ${issue['message']}`;
-                    issueList.appendChild(li);
+                    li.className = issue.severity.toLowerCase();
+                    li.textContent = `[${issue.severity}] $}issue.issue} -> ${issue.action_taken}`;
+                    latestList.appendChild(li);
+                });
+
+                history.slice(0, 20).forEach(issue => {
+                    const li = document.createElement('li');
+                    li.className = issue.severity.toLowerCase();
+                    li.textContent = `[${issue.severity}] ${issue.issue}`;
+                    historyList.appendChild(li);
                 });
             }
 
-            setInterval(fetchStatus, 5000);
-            fetchStatus();
+            setInterval(fetchData, 3000);
+            fetchData();
         </script>
     </body>
 </html>
