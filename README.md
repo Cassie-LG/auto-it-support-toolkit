@@ -1,23 +1,61 @@
-# auto-it-support-toolkit
-Automated IT support toolkit: system monitoring, issue detection, and ticketing
+# Auto IT Support Toolkit
+ Automated IT support toolkit for real-time system monitoring, issue detection, remediation, and ticket generation.
+
+ ---
 
 ## Features
-- System monitoring (CPU, memory, disk)
-- Issue detection
-- Automated fixes
-- Logging
-- Ticket generation
+- **System Monitoring**
+    - CPU, memory, and disk usage tracking
+    - Active process monitoring
 
-## Run
-pip install -r requirements.txt
-python main.py
+- **Issue Detection**
+    - Detects high CPU, memory, and disk usage
+    - Identifies missing critical system processes
+
+- **Severity Classification**
+    - Issues categorized as:
+        - LOW
+        - MEDIUM
+        - HIGH
+        - CRITICAL
+
+- **Automated Remediation**
+    - Clears temporary files for disk issues
+    - Attempts service recovery (platform-dependent)
+    - Escelates unsafe scenarios to manual intervention
+
+- **Logging**
+    - Timestamped logs with severity levels
+
+- **Ticket Generation**
+    - Structured JSON tickets for each detected issue
+    - Includes severity, action taken, and status
+
+- **Safety Controls**
+    - Limits automated fixes to **3 attempts per issue type**
+    - Prevents infinite loops and excessive system modification
+
+---
 
 ## Cross-Platform Support
-This tool automatically adapts behavior based on the operating system:
-- Windows: Uses native temp cleanup and simulated service handling
-- Linux/macOS: Uses system-level commands and real service checks
 
-## Safety Features
-- Limits automated fixes to 3 attempts per issue
-- Prevents infinite loops and excessive system modification
-- Designed to simulate real-world IT support workflows safely
+This tool automatically adapts behavior based on the operating system:
+
+### Windows
+- Uses `C:/` for disk monitoring
+- Cleans `%TEMP%` directory
+- Monitors critical system process: `svchost`
+- Simulates safe service handling (no unsafe system manipulation)
+
+### Linux / macOS
+- Uses `/` for disk monitoring
+- Cleans `/tmp` directory
+- Monitors critical service: `ssh`
+- Attempts service restart using system-level commands (Linux)
+
+---
+
+## Installation
+
+```bash
+pip install -r requirements.txt
